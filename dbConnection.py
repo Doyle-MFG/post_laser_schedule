@@ -221,6 +221,7 @@ class LoginDialog(QtGui.QDialog):
         layout.addWidget(self.cancel_button, 2, 1)
         layout.addWidget(self.login_button, 2, 2)
         self.setLayout(layout)
+        self.username.setFocus()
 
     def get_data(self, host):
         self.setWindowTitle("%s Login" % host)

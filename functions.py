@@ -92,6 +92,22 @@ def reset_cursor():
         QtGui.QApplication.restoreOverrideCursor()
 
 
+def write_settings(name, value):
+    settings = QtCore.QSettings("Doyle Mfg", "Post_Laser_Schedule")
+    settings.setDefaultFormat(1)
+    settings.beginGroup('main')
+    settings.setValue(name, value)
+    settings.endGroup()
+
+
+def read_settings(name):
+    settings = QtCore.QSettings("Doyle Mfg", "Post_Laser_Schedule")
+    settings.setDefaultFormat(1)
+    settings.beginGroup('main')
+    value = settings.value(name, None)
+    return value
+
+
 class StatusDialog(QtGui.QDialog):
     state = []
 

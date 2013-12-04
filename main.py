@@ -5,7 +5,8 @@ from PyQt4 import QtGui, QtCore
 
 from query import query
 from dbConnection import new_connection, start_transaction, commit_transaction, rollback_transaction
-from functions import create_tab, create_missing_tab, get_selected_rows, StatusDialog, reset_cursor
+from functions import create_tab, create_missing_tab, get_selected_rows, StatusDialog, reset_cursor, \
+    write_settings, read_settings
 import report
 
 
@@ -15,6 +16,12 @@ class Main(QtGui.QMainWindow):
     def __init__(self, parent=None):
         QtGui.QMainWindow.__init__(self, parent)
         self.setWindowTitle(__title__)
+        try:
+            self.restoreState(read_settings("state").toByteArray())
+            print "state restored"
+        except Exception as e:
+            print e.message
+            self.resize(1024, 768)
         self.tabs = QtGui.QTabWidget(self)
         self.title = QtGui.QLabel(__title__)
         self.title.setFont(QtGui.QFont("sans", 32, 63, True))
@@ -287,3 +294,7 @@ class Main(QtGui.QMainWindow):
 
     def refresh_triggered(self, checked):
         self.update_data()
+
+    def closeEvent(self, event):
+        print "writing"
+        write_settings("state", self.saveState())
