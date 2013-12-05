@@ -17,8 +17,8 @@ class Main(QtGui.QMainWindow):
         QtGui.QMainWindow.__init__(self, parent)
         self.setWindowTitle(__title__)
         try:
-            self.restoreState(read_settings("state").toByteArray())
-            print "state restored"
+            self.resize(read_settings("size"))
+            self.move(read_settings("pos"))
         except Exception as e:
             print e.message
             self.resize(1024, 768)
@@ -296,5 +296,5 @@ class Main(QtGui.QMainWindow):
         self.update_data()
 
     def closeEvent(self, event):
-        print "writing"
-        write_settings("state", self.saveState())
+        write_settings("size", self.size())
+        write_settings("pos", self.pos())
