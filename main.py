@@ -17,8 +17,8 @@ class Main(QtGui.QMainWindow):
         QtGui.QMainWindow.__init__(self, parent)
         self.setWindowTitle(__title__)
         try:
-            self.resize(read_settings("size"))
-            self.move(read_settings("pos"))
+            self.resize(read_settings("size").toSize())
+            self.move(read_settings("pos").toPoint())
         except Exception as e:
             print e.message
             self.resize(1024, 768)
