@@ -45,6 +45,12 @@ def create_tab(machine, name):
             tab.table.max_widths = [50, 150, 50, 300, 125, 100, 100]
             resize_table(tab.table)
             tab.layout().addWidget(tab.table)
+            tab.table.setSortingEnabled(True)
+            header = tab.table.horizontalHeader()
+            header.setSortIndicatorShown(True)
+            header.setStretchLastSection(True)
+            header.setSortIndicator(1, 0)
+            tab.table.verticalHeader().setVisible(False)
         return tab
 
 

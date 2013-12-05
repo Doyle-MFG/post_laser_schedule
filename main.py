@@ -19,6 +19,7 @@ class Main(QtGui.QMainWindow):
         try:
             self.resize(read_settings("size").toSize())
             self.move(read_settings("pos").toPoint())
+            self.setWindowState(read_settings("state"))
         except Exception as e:
             print e.message
             self.resize(1024, 768)
@@ -54,12 +55,7 @@ class Main(QtGui.QMainWindow):
             tab_widgets.append(create_missing_tab("Missing"))
             for widget in tab_widgets:
                 self.tabs.addTab(widget, widget.windowTitle())
-                widget.table.setSortingEnabled(True)
-                header = widget.table.horizontalHeader()
-                header.setSortIndicatorShown(True)
-                header.setStretchLastSection(True)
-                header.setSortIndicator(1, 0)
-                header.sortIndicatorChanged.connect(self.resort_table)
+                widget.table.horizontalHeader().sortIndicatorChanged.connect(self.resort_table)
 
     def load_actions(self):
         actions = [self.move_action, self.update_action, self.hide_action, self.priority_action,
@@ -131,7 +127,6 @@ class Main(QtGui.QMainWindow):
                         reset_cursor()
                         return
                 commit_transaction("write")
-                QtGui.QMessageBox.information(None, "Successful", "Transaction completed successfully")
                 self.update_data()
             QtGui.QApplication.restoreOverrideCursor()
 
@@ -182,7 +177,6 @@ class Main(QtGui.QMainWindow):
                         reset_cursor()
                         return
                 commit_transaction("write")
-                QtGui.QMessageBox.information(None, "Successful", "Transaction completed successfully")
                 self.update_data()
             QtGui.QApplication.restoreOverrideCursor()
 
@@ -209,7 +203,6 @@ class Main(QtGui.QMainWindow):
             ok = QtGui.QMessageBox.question(None, "Are you sure?", text, 1, 2)
             if ok == 1:
                 commit_transaction("write")
-                QtGui.QMessageBox.information(None, "Successful", "Transaction completed successfully")
                 self.update_data()
             else:
                 rollback_transaction("write")
@@ -238,7 +231,6 @@ class Main(QtGui.QMainWindow):
             ok = QtGui.QMessageBox.question(None, "Are you sure?", text, 1, 2)
             if ok == 1:
                 commit_transaction("write")
-                QtGui.QMessageBox.information(None, "Successful", "Transaction completed successfully")
                 self.update_data()
             else:
                 rollback_transaction("write")
@@ -273,7 +265,6 @@ class Main(QtGui.QMainWindow):
                         reset_cursor()
                         return
                 commit_transaction("write")
-                QtGui.QMessageBox.information(None, "Successful", "Transaction completed successfully")
                 self.update_data()
             QtGui.QApplication.restoreOverrideCursor()
 
@@ -320,3 +311,4 @@ class Main(QtGui.QMainWindow):
     def closeEvent(self, event):
         write_settings("size", self.size())
         write_settings("pos", self.pos())
+        write_settings("state", self.windowState())

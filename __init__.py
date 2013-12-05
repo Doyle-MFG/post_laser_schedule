@@ -2,11 +2,13 @@ import sys
 import os
 import time
 from PyQt4 import QtGui, QtCore
+import cStringIO as StringIO
 
 sys.path.insert(0, os.path.split(__file__)[0])
 
 import dbConnection
 from main import Main
+import images
 
 from reportlab.pdfbase import _fontdata_widths_courier #@UnresolvedImport @UnusedImport
 from reportlab.pdfbase import _fontdata_widths_courierbold #@UnresolvedImport @UnusedImport
@@ -30,6 +32,10 @@ from reportlab.pdfbase import _fontdata_enc_zapfdingbats #@UnresolvedImport @Unu
 from reportlab.pdfbase import _fontdata_enc_pdfdoc #@UnresolvedImport @UnusedImport
 from reportlab.pdfbase import _fontdata_enc_macexpert #@UnresolvedImport @UnusedImport
 
+#TODO: Scan to Add
+#TODO: Show print on mouse over
+#TODO: Add statusbar
+
 
 def main():
 
@@ -38,7 +44,7 @@ def main():
         app.processEvents()
 
     app = QtGui.QApplication(sys.argv)
-    splash_img = QtGui.QPixmap("splash.png")
+    splash_img = QtGui.QPixmap(':images/splash.png')
     splash = QtGui.QSplashScreen(splash_img, QtCore.Qt.WindowStaysOnTopHint)
     splash.show()
     time.sleep(.001)
@@ -49,6 +55,7 @@ def main():
     update_splash("Loading GUI...")
     myapp = Main()
     myapp.tab_loaded.connect(update_splash)
+    myapp.setWindowIcon(QtGui.QIcon(':images/post_laser_schedule.ico'))
     myapp.show()
     update_splash("GUI Loaded...")
     myapp.load_tabs()

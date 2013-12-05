@@ -141,7 +141,7 @@ def rollback_transaction(db='qt_sql_default_connection'):
 
 
 def write_settings(host, database, group):
-    settings = QtCore.QSettings("Doyle Mfg", "CL850 Manager")
+    settings = QtCore.QSettings("Doyle Mfg", "Post Laser Schedule")
     settings.setDefaultFormat(1)
     settings.beginGroup(group)
     settings.setValue('host', QtCore.QString(host))
@@ -150,48 +150,13 @@ def write_settings(host, database, group):
 
 
 def read_settings(group):
-    settings = QtCore.QSettings("Doyle Mfg", "CL850 Manager")
+    settings = QtCore.QSettings("Doyle Mfg", "Post Laser Schedule")
     settings.setDefaultFormat(1)
     settings.beginGroup(group)
-    host = settings.value('host', None)
-    database = settings.value('database', None)
-    if host == None or database == None:
-        dbs = DatabaseSettings()
-        while host == None or database == None:
-            host, database = dbs.get_data(group)
-        write_settings(host, database, group)
-    else:
-        host = host.toString()
-        database = database.toString()
+    host = settings.value('host', '192.168.1.39').toString()
+    database = settings.value('database', 'inventorysystem').toString()
+    write_settings(host, database, group)
     return host, database
-
-
-class DatabaseSettings(QtGui.QDialog):
-    """
-    Opens a dialog to enter network settings if
-    there are no settings in the config error.
-    """
-    def __init__(self, parent=None):
-        QtGui.QDialog.__init__(self, parent)
-        uic.loadUi('ui/databaseSettings.ui', self)
-        
-    def get_data(self, name):
-        self.setWindowTitle('%s - Database Settings' % name)
-        self.exec_()
-        host = self.hostname.text()
-        database = self.database.text()
-        if host != "":
-            if database != "":
-                return host, database
-            else:
-                self.database.setFocus()
-                return host, None
-        else:
-            self.hostname.setFocus()
-            return None, None
-    
-    def reject(self):
-        self.done(0)
 
 
 class LoginDialog(QtGui.QDialog):
