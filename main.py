@@ -6,7 +6,7 @@ from PyQt4 import QtGui, QtCore
 from query import query
 from dbConnection import new_connection, start_transaction, commit_transaction, rollback_transaction
 from functions import create_tab, create_missing_tab, get_selected_rows, StatusDialog, reset_cursor, \
-    write_settings, read_settings
+    write_settings, read_settings, resize_table
 import report
 
 
@@ -54,6 +54,12 @@ class Main(QtGui.QMainWindow):
             tab_widgets.append(create_missing_tab("Missing"))
             for widget in tab_widgets:
                 self.tabs.addTab(widget, widget.windowTitle())
+                widget.table.setSortingEnabled(True)
+                header = widget.table.horizontalHeader()
+                header.setSortIndicatorShown(True)
+                header.setStretchLastSection(True)
+                header.setSortIndicator(1, 0)
+                header.sortIndicatorChanged.connect(self.resort_table)
 
     def load_actions(self):
         actions = [self.move_action, self.update_action, self.hide_action, self.priority_action,
@@ -65,6 +71,22 @@ class Main(QtGui.QMainWindow):
             action.setToolTip("F%d" % i)
             action.triggered.connect(getattr(self, "%s_triggered" % action.text().toLower()))
             i += 1
+
+    def resort_table(self, col, order):
+        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+        header = self.sender()
+        table = header.parent()
+        table_model = table.model()
+        sort_by = table_model.headerData(col, QtCore.Qt.Horizontal).toString()
+        if order:
+            sort_by = "`%s` Desc" % sort_by
+        else:
+            sort_by = "`%s` Asc" % sort_by
+        qry = query("parts", [table.machine, sort_by])
+        if qry:
+            table_model.setQuery(qry)
+            resize_table(table)
+        reset_cursor()
 
     def update_data(self):
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)

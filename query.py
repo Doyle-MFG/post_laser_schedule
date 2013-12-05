@@ -8,7 +8,7 @@ schedules = ('SELECT Machine_tbl.Machine_ID, Machine_tbl.Machine_Desc FROM `post
              'group by machine order by Machine_tbl.Machine_Desc')
 
 parts = ('Select Priority, `Part #`, Qty, Description, Destination, Material, Tracking_num '
-         'from post_laser_schedule where machine={0} and missing=0')
+         'from post_laser_schedule where machine={0} and missing=0 Order by `Priority`, {1}')
 
 missing_parts = ('Select Priority, `Part #`, Qty, Description, Destination, Material, Tracking_num '
                  'from post_laser_schedule where missing!=0')

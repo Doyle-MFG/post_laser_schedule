@@ -24,11 +24,11 @@ class colorized_QSqlQueryModel(QtSql.QSqlQueryModel):
         return data
 
 
-def resize_table(table, max_widths):
+def resize_table(table):
     table.resizeColumnsToContents()
-    for i in range(max_widths.__len__()):
-        if table.columnWidth(i) > max_widths[i]:
-            table.setColumnWidth(i, max_widths[i])
+    for i in range(table.max_widths.__len__()):
+        if table.columnWidth(i) > table.max_widths[i]:
+            table.setColumnWidth(i, table.max_widths[i])
 
 
 def create_tab(machine, name):
@@ -36,12 +36,14 @@ def create_tab(machine, name):
         tab.setWindowTitle(name)
         tab.setLayout(QtGui.QGridLayout())
         tab.table = QtGui.QTableView()
-        qry = query("parts", [machine])
+        tab.table.machine = machine
+        qry = query("parts", [machine, "`Part #` Asc"])
         if qry:
             mod = colorized_QSqlQueryModel()
             mod.setQuery(qry)
             tab.table.setModel(mod)
-            resize_table(tab.table, [50, 150, 50, 300, 125, 100, 100])
+            tab.table.max_widths = [50, 150, 50, 300, 125, 100, 100]
+            resize_table(tab.table)
             tab.layout().addWidget(tab.table)
         return tab
 
@@ -56,7 +58,8 @@ def create_missing_tab(name):
             mod = colorized_QSqlQueryModel()
             mod.setQuery(qry)
             tab.table.setModel(mod)
-            resize_table(tab.table, [50, 150, 50, 300, 125, 100, 100])
+            tab.table.max_widths = [50, 150, 50, 300, 125, 100, 100]
+            resize_table(tab.table)
             tab.layout().addWidget(tab.table)
         return tab
 
