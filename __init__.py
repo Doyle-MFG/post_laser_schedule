@@ -11,8 +11,6 @@ import images
 
 from reportlab.pdfbase import *
 
-#TODO: Scan to Add
-
 
 def main():
 
