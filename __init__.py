@@ -2,7 +2,6 @@ import sys
 import os
 import time
 from PyQt4 import QtGui, QtCore
-import cStringIO as StringIO
 
 sys.path.insert(0, os.path.split(__file__)[0])
 
@@ -10,31 +9,9 @@ import dbConnection
 from main import Main
 import images
 
-from reportlab.pdfbase import _fontdata_widths_courier #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_widths_courierbold #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_widths_courieroblique #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_widths_courierboldoblique #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_widths_helvetica #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_widths_helveticabold #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_widths_helveticaoblique #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_widths_helveticaboldoblique #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_widths_timesroman #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_widths_timesbold #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_widths_timesitalic #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_widths_timesbolditalic #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_widths_symbol #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_widths_zapfdingbats #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_enc_winansi #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_enc_macroman #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_enc_standard #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_enc_symbol #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_enc_zapfdingbats #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_enc_pdfdoc #@UnresolvedImport @UnusedImport
-from reportlab.pdfbase import _fontdata_enc_macexpert #@UnresolvedImport @UnusedImport
+from reportlab.pdfbase import *
 
 #TODO: Scan to Add
-#TODO: Show print on mouse over
-#TODO: Add statusbar
 
 
 def main():

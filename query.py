@@ -24,9 +24,15 @@ get_status = "Select text, finished from status_values"
 status = ("Insert into Status_tbl (Status_Description, User_ID, Tracking_num, Finished, StatQty) "
           "VALUES('{0}', {1}, {2}, '{3}', {4})")
 
+get_qty = "Select Qty from Work_Details_tbl where Tracking_num={0}"
+
 update_qty = "Update Work_Details_tbl set Qty={0} where Tracking_num={1}"
 
 hide = "Update Work_Details_tbl set `show`=0 where Tracking_num={0}"
+
+show = "Update Work_Details_tbl set `show`=1 where Tracking_num={0}"
+
+get_finished = "Select Finished from Status_qry where Tracking_num={0}"
 
 missing = "Update Work_Details_tbl set missing=if(missing=0, -1, 0) where Tracking_num={0}"
 

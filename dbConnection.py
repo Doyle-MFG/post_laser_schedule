@@ -77,8 +77,9 @@ def check_connection():
         else:
             print "Connection Checked - Error"
             return False, qry.lastError().text()
-    except:
+    except Exception as e:
         print "Connection Checked - Failed"
+        print e.message
         return False, qry.lastError().text()
 
 

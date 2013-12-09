@@ -51,6 +51,7 @@ def create_tab(machine, name):
             header.setStretchLastSection(True)
             header.setSortIndicator(1, 0)
             tab.table.verticalHeader().setVisible(False)
+            tab.table.setMouseTracking(True)
         return tab
 
 
@@ -99,6 +100,12 @@ def get_users():
 def reset_cursor():
     while QtGui.QApplication.overrideCursor():
         QtGui.QApplication.restoreOverrideCursor()
+
+
+def set_statusbar(self, text, timeout=0):
+    sec = 1000
+    self.statusBar().showMessage(text, timeout*sec)
+    self.repaint()
 
 
 def write_settings(name, value):
