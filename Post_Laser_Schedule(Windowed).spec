@@ -1,5 +1,5 @@
 # -*- mode: python -*-
-a = Analysis(['__init__.py'],
+a = Analysis(['C:\\Users\\Ryan\\Documents\\GitHub\\post_laser_schedule\\__init__.py'],
              pathex=['C:\\Users\\Ryan\\Documents\\GitHub\\post_laser_schedule'],
              hiddenimports=[],
              hookspath=None,
@@ -12,7 +12,7 @@ exe = EXE(pyz,
           debug=False,
           strip=None,
           upx=True,
-          console=True )
+          console=True , icon='C:\\Users\\Ryan\\Documents\\GitHub\\post_laser_schedule\\post_laser_schedule.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,

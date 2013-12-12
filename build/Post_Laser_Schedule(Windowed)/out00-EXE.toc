@@ -1,9 +1,9 @@
 ('C:\\Users\\Ryan\\Documents\\GitHub\\post_laser_schedule\\build\\Post_Laser_Schedule(Windowed)\\Post_Laser_Schedule(Windowed).exe',
  True,
  False,
- None,
+ 'C:\\Users\\Ryan\\Documents\\GitHub\\post_laser_schedule\\post_laser_schedule.ico',
  None,
  [],
  None,
  False,
- 1386603326L)
+ 1386851979L)
