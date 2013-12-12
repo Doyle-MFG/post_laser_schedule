@@ -41,7 +41,6 @@ def new_connection(name, host=None, database=None):
     """
     if QtSql.QSqlDatabase.database(name).open():
         db = QtSql.QSqlDatabase.database(name)
-        db.login = db.connectOptions()
         return db, True
     else:
         if host == None or database == None:
@@ -49,38 +48,17 @@ def new_connection(name, host=None, database=None):
         login_dialog = LoginDialog()
         login = login_dialog.get_data(host)
         if not login:
-            QtGui.QMessageBox.critical(None, "Bad Login!", "Username and password do not match or an error occurred")
             return None, False
         db = QtSql.QSqlDatabase.addDatabase("QMYSQL", name)
-        db.setUserName("fab")
+        db.setUserName(login[0])
         db.setHostName(host)
         db.setDatabaseName(database)
-        db.setPassword("doylefab")
-        db.setConnectOptions(login)
-        db.login = login
+        db.setPassword(login[1])
         if db.open():
             return db, True
         else:
             db_err(db)
             return None, False
-
-
-def check_connection():
-    """
-    Keeps the connection from timing out and throwing a bunch
-    of errors at the user.
-    """
-    qry = QtSql.QSqlQuery()
-    try:
-        if qry.exec_("Select name from user"):
-            return True, None
-        else:
-            print "Connection Checked - Error"
-            return False, qry.lastError().text()
-    except Exception as e:
-        print "Connection Checked - Failed"
-        print e.message
-        return False, qry.lastError().text()
 
 
 def close_connection(name):
@@ -164,11 +142,7 @@ class LoginDialog(QtGui.QDialog):
 
     def __init__(self, parent=None):
         QtGui.QDialog.__init__(self, parent)
-        self.username = QtGui.QComboBox()
-        users = get_users()
-        if not users:
-            self.close()
-        self.username.addItems(users)
+        self.username = QtGui.QLineEdit()
         self.password = QtGui.QLineEdit()
         self.password.setEchoMode(QtGui.QLineEdit.Password)
         username_label = QtGui.QLabel("Username")
@@ -192,20 +166,11 @@ class LoginDialog(QtGui.QDialog):
     def get_data(self, host):
         self.setWindowTitle("%s Login" % host)
         ok = self.exec_()
-        username = self.username.currentText()
+        username = self.username.text()
         password = self.password.text()
         if ok:
             if username != "" and password != "":
-                qry = query("check_password", [username, password])
-                if qry:
-                    qry.first()
-                    valid = qry.value(0).toBool()
-                    if valid:
-                        return username
-                    else:
-                        return False
-                else:
-                    return False
+                return [username, password]
             else:
                 self.get_data(host)
         else:

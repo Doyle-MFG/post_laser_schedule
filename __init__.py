@@ -20,7 +20,6 @@ from reportlab.pdfbase import _fontdata_widths_helveticaboldoblique
 from reportlab.pdfbase import _fontdata_widths_timesroman
 from reportlab.pdfbase import _fontdata_widths_timesbold
 from reportlab.pdfbase import _fontdata_widths_timesitalic
-from reportlab.pdfbase import _fontdata_widths_timesbolditalic
 from reportlab.pdfbase import _fontdata_widths_symbol
 from reportlab.pdfbase import _fontdata_widths_zapfdingbats
 from reportlab.pdfbase import _fontdata_enc_winansi

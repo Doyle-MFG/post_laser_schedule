@@ -13,7 +13,7 @@ parts = ('Select Priority, `Part #`, Qty, Status, Date, `Order`, Description, De
 missing_parts = ('Select Priority, `Part #`, Qty, Description, Destination, Material, Tracking_num '
                  'from post_laser_schedule where missing!=0')
 
-machines = "Select Machine_Desc from Machine_tbl"
+machines = "Select Machine_Desc from Machine_tbl order by Machine_ID Desc"
 
 get_machine = "Select Machine_ID from Machine_tbl where Machine_Desc='{0}'"
 
@@ -42,7 +42,7 @@ get_users = "Select Name from Users_tbl where active=1"
 
 check_password = "Select if(password='{1}', True, False) from Users_tbl where Name='{0}'"
 
-get_user_id = "Select User_Id from Users_tbl where Name='{0}'"
+get_user_id = "Select User_Id from Users_tbl where login='{0}'"
 
 report_header_data = ("Select Job_num, date_Format(JDate, '%Y-%m-%d'), Machine_Desc from Work_Orders_tbl join "
                       "Machine_tbl on Work_Orders_tbl.Machine_ID = Machine_tbl.Machine_ID Where Job_ID = "
@@ -55,14 +55,25 @@ report_data = ("Select `Part Num`, `Qty`, `Desc`, `Mat`, `Process`, `Dest`, `Not
 def query(data, args=None, db='qt_sql_default_connection'):
     qry = QtSql.QSqlQuery(db)
     try:
-        data = getattr(sys.modules[__name__], data)
+        statement = getattr(sys.modules[__name__], data)
     except AttributeError:
         QtGui.QMessageBox.critical(None, "Query Not Found", "A query matching %s was not found. Typo?" % data)
         return False
     if args:
-        data = data.format(*args)
-    if qry.exec_(data):
+        statement = statement.format(*args)
+    if qry.exec_(statement):
         return qry
     else:
+        error = qry.lastError()
+        print error.text()
+        if 'MySQL server has gone away' in error.text():
+            print "Connection error... Trying to reconnect"
+            dbConnection.close_all_connections()
+            if dbConnection.default_connection():
+                err_qry = query(data, args, db)
+                return err_qry
+            else:
+                QtGui.QMessageBox.critical(None, "Fatal Error", "The database had a fatal connection error... Goodbye.")
+                sys.exit(1)
         dbConnection.db_err(qry)
         return False

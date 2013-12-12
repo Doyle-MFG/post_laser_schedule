@@ -193,7 +193,7 @@ class Main(QtGui.QMainWindow):
                 QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
                 start_transaction("write")
                 for tracking_number in tracking_numbers:
-                    qry = query("get_user_id", [dbw.login])
+                    qry = query("get_user_id", [dbw.userName()])
                     if qry:
                         qry.first()
                         user_id = qry.value(0).toString()
